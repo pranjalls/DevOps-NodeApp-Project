@@ -1,5 +1,3 @@
-// src/index.js
-
 const http = require('http');
 
 const PORT = 3000;
@@ -16,56 +14,61 @@ const html = `
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to right, #4facfe, #00f2fe);
       color: #fff;
-      text-align: center;
       margin: 0;
-    }
-    .header-image {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     .container {
-      max-width: 700px;
-      margin: auto;
-      background-color: rgba(0,0,0,0.2);
+      display: flex;
+      background-color: rgba(0, 0, 0, 0.2);
       border-radius: 20px;
-      padding: 40px 30px;
+      padding: 40px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      margin-top: -30px;
+      max-width: 800px;
+      align-items: center;
+      gap: 30px;
+    }
+    .girl-icon {
+      width: 150px;
+    }
+    .text {
+      text-align: left;
     }
     h1 {
-      font-size: 3em;
+      font-size: 2.5em;
       margin-bottom: 10px;
     }
     p {
-      font-size: 1.3em;
-    }
-    .icon {
-      width: 100px;
-      margin: 20px auto;
+      font-size: 1.2em;
+      margin: 5px 0;
     }
     footer {
-      margin-top: 40px;
-      padding: 15px;
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
       font-size: 1em;
-      background-color: rgba(0, 0, 0, 0.2);
-      border-top: 1px solid #ccc;
+      color: #f0f0f0;
     }
   </style>
 </head>
 <body>
-  <img class="header-image" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=80" alt="DevOps Banner" />
 
   <div class="container">
-    <img class="icon" src="https://cdn-icons-png.flaticon.com/512/919/919825.png" alt="Node.js Logo" />
-    <h1>🚀 Welcome to DevOps Node.js App!</h1>
-    <p>CI/CD with Git, Docker, Terraform, Ansible & Jenkins</p>
-    <p>💡 Deployed seamlessly on AWS Free Tier</p>
+    <img class="girl-icon" src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" alt="Girl pointing" />
+    <div class="text">
+      <h1>🚀 Welcome to DevOps Node.js App!</h1>
+      <p>CI/CD with Git, Docker, Terraform, Ansible & Jenkins</p>
+      <p>💡 Seamlessly deployed on AWS Free Tier</p>
+    </div>
   </div>
 
   <footer>
     Developed by Pranjal Shinde © 2025
   </footer>
+
 </body>
 </html>
 `;

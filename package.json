@@ -1,0 +1,11 @@
+{
+  "name": "devops-node-app",
+  "version": "1.0.0",
+  "description": "A simple Node.js app for DevOps pipeline demo",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "Pranjal",
+  "license": "ISC"
+}

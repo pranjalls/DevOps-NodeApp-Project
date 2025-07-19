@@ -32,4 +32,22 @@ This project is a full-stack DevOps pipeline to build, test, provision, configur
 ---
 
 ## 📁 Project Structure
+DevOps-NodeApp-Project/
+├── ansible/
+│ ├── deploy.yml # Ansible playbook to deploy Docker container
+│ └── hosts.ini # Ansible inventory with EC2 IP
+├── infra/
+│ ├── main.tf # Terraform code for AWS provisioning
+│ ├── variables.tf # Terraform input variables
+│ └── outputs.tf # Output public IP
+├── scripts/
+│ ├── build_and_push.sh # Docker build & push to DockerHub
+│ └── cleanup.sh # Docker cleanup script
+├── src/
+│ └── index.js # Node.js web app with styled HTML response
+├── Dockerfile # Docker image configuration
+├── Jenkinsfile # Jenkins CI/CD pipeline definition
+├── README.md # Project documentation
+└── REPORT.md # Architecture, screenshots, and summary
+
 

@@ -2,12 +2,8 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_NAME = 'ppranshinn0225/devops-node-app'
-  }
-
-  triggers {
-    // 🕒 Run every 30 minutes — adjust as needed
-    cron('H/30 * * * *')
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub') // Jenkins credentials ID for Docker Hub
+    IMAGE_NAME = 'ppranshinn0225/devops-node-app'    // Your Docker Hub image name
   }
 
   stages {
@@ -19,9 +15,7 @@ pipeline {
 
     stage('Clone Repo') {
       steps {
-        git branch: 'main',
-            url: 'https://github.com/pranjalls/DevOps-NodeApp-Project.git',
-            credentialsId: 'github-pat'
+        git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/pranjalls/DevOps-NodeApp-Project.git'
       }
     }
 
@@ -33,7 +27,17 @@ pipeline {
 
     stage('Push to Docker Hub') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-          sh '''
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-            docker push $
+        sh '''
+          echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+          docker push $IMAGE_NAME
+        '''
+      }
+    }
+
+    stage('Deploy with Ansible') {
+      steps {
+        sh 'ansible-playbook -i ansible/hosts.ini ansible/deploy.yml'
+      }
+    }
+  }
+}

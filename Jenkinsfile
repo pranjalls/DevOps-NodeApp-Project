@@ -2,14 +2,20 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub') // Jenkins credentials ID
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub') // Jenkins credentials ID for Docker Hub
     IMAGE_NAME = 'ppranshinn0225/devops-node-app'    // Your Docker Hub image name
   }
 
   stages {
+    stage('Clean Workspace') {
+      steps {
+        cleanWs()
+      }
+    }
+
     stage('Clone Repo') {
       steps {
-  git credentialsId: 'github-pat', url: 'https://github.com/pranjalls/DevOps-NodeApp-Project.git'
+        git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/pranjalls/DevOps-NodeApp-Project.git'
       }
     }
 

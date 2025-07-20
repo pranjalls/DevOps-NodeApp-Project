@@ -1,0 +1,32 @@
+---
+- name: Deploy Node.js App to EC2
+  hosts: node_app
+  become: yes
+
+  tasks:
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Install Node.js and npm
+      apt:
+        name:
+          - nodejs
+          - npm
+        state: present
+
+    - name: Clone Node.js app from GitHub
+      git:
+        repo: https://github.com/pranjalls/DevOps-NodeApp-Project.git
+        dest: /home/ubuntu/app
+        version: main
+
+    - name: Install Node.js dependencies
+      npm:
+        path: /home/ubuntu/app
+
+    - name: Run app in background using nohup
+      shell: |
+        nohup node /home/ubuntu/app/src/index.js > app.log 2>&1 &
+      args:
+        executable: /bin/bash

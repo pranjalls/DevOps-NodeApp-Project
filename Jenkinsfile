@@ -2,8 +2,12 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub') // Jenkins credentials ID for Docker Hub
-    IMAGE_NAME = 'ppranshinn0225/devops-node-app'    // Your Docker Hub image name
+    IMAGE_NAME = 'ppranshinn0225/devops-node-app'
+  }
+
+  triggers {
+    // Optional: builds every 30 mins
+    cron('H/30 * * * *')
   }
 
   stages {
@@ -27,10 +31,12 @@ pipeline {
 
     stage('Push to Docker Hub') {
       steps {
-        sh '''
-          echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-          docker push $IMAGE_NAME
-        '''
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+          sh '''
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+            docker push $IMAGE_NAME
+          '''
+        }
       }
     }
 

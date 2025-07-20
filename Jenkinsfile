@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Clone Repo') {
       steps {
-        git 'https://github.com/pranjalshinde/DevOps-NodeApp-Project.git'  // Your GitHub repo URL
+  git credentialsId: 'github-pat', url: 'https://github.com/pranjalshinde/DevOps-NodeApp-Project.git'
       }
     }
 

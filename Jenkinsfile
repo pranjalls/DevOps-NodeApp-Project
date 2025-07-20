@@ -6,8 +6,8 @@ pipeline {
   }
 
   triggers {
-    // Optional: builds every 30 mins
-    cron('H/30 * * * *')
+    // Optional: Run every hour
+    cron('H 1 * * *')
   }
 
   stages {

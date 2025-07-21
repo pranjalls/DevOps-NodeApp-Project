@@ -2,13 +2,16 @@
 - name: Deploy Node.js App to EC2
   hosts: node_app
   become: yes
-  gather_facts: false  # <✅ Speeds up execution
+  gather_facts: false
 
   tasks:
-    - name: Update APT cache
+    - name: Update APT cache with retries
       apt:
         update_cache: yes
-      changed_when: false  # <✅ Avoids unnecessary changes
+      retries: 3
+      delay: 5
+      register: result
+      until: result is succeeded
 
     - name: Install Node.js and npm
       apt:
@@ -23,7 +26,7 @@
         repo: https://github.com/pranjalls/DevOps-NodeApp-Project.git
         dest: /home/ubuntu/app
         version: main
-        force: yes  # <✅ Forces fresh clone if folder exists
+        force: yes
 
     - name: Install Node.js dependencies
       npm:

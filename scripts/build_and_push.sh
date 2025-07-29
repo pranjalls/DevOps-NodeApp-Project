@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -euo pipefail  #-e: Exit immediately if any command fails.  -u: Treat unset variables as an error. -o pipefail: If any command in a pipeline fails, the whole pipeline fails.
 
 # Set your DockerHub username
 DOCKER_USERNAME="ppranshinn0225"

@@ -1,43 +1,45 @@
 ---
-- name: Deploy Node.js App to EC2
-  hosts: node_app
+- name: Deploy Node.js App via Docker
+  hosts: web
   become: yes
-  gather_facts: false
-
   tasks:
-    - name: Update APT cache with retries
-      apt:
-        update_cache: yes
-      retries: 3
-      delay: 5
-      register: result
-      until: result is succeeded
-
-    - name: Install Node.js and npm
+    - name: Install required system packages
       apt:
         name:
-          - nodejs
-          - npm
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
         state: present
         update_cache: yes
 
-    - name: Clone Node.js app from GitHub
-      git:
-        repo: https://github.com/pranjalls/DevOps-NodeApp-Project.git
-        dest: /home/ubuntu/app
-        version: main
-        force: yes
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
 
-    - name: Install Node.js dependencies
-      npm:
-        path: /home/ubuntu/app
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
 
-    - name: Kill any running node processes (cleanup)
-      shell: pkill -f index.js || true
-      ignore_errors: yes
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
 
-    - name: Run app in background using nohup
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Pull Docker image from Docker Hub
+      shell: docker pull ppranshinn0225/devops-node-app:latest
+
+    - name: Run Docker container (map port 80 → 3000)
       shell: |
-        nohup node /home/ubuntu/app/src/index.js > /home/ubuntu/app/app.log 2>&1 &
-      args:
-        executable: /bin/bash
+        docker stop nodeapp || true
+        docker rm nodeapp || true
+        docker run -d --name nodeapp -p 80:3000 ppranshinn0225/devops-node-app:latest
